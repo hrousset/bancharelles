@@ -118,10 +118,11 @@ function Calendrier(props) {
       // update
       const response = await fetch('http://localhost:3000/api/reservations', {
         method: 'POST',
-        body: JSON.stringify([newReservation, ...reservations])
+        body: JSON.stringify(newReservation)
       });
 
-      updateReservations(await response.json());
+      const newresponse = await fetch('http://localhost:3000/api/reservations');
+      updateReservations(await newresponse.json());
 
       // reset
       setLoading(false);

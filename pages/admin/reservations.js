@@ -107,29 +107,41 @@ function Reservations(props) {
         onRowAdd: async newReservation => {
           const response = await fetch('http://localhost:3000/api/reservations', {
             method: 'POST',
-            body: JSON.stringify([newReservation, ...reservations])
+            body: JSON.stringify(newReservation)
           });
-          updateReservations(await response.json());
+          const newresponse = await fetch('http://localhost:3000/api/reservations');
+          updateReservations(await newresponse.json());
         },
         onRowUpdate: async (newReservation, oldData) => {
-          const data = [...reservations];
-          data[data.indexOf(oldData)] = newReservation;
-          // console.log(data);
+          // const data = [...reservations];
+          // data[data.indexOf(oldData)] = newReservation;
+          // const response = await fetch('http://localhost:3000/api/reservations', {
+          //   method: 'UPDATE',
+          //   body: JSON.stringify({id: oldData._id, newRes: newReservation})
+          // });
+          delete newReservation._id;
+
+          const delresponse = await fetch('http://localhost:3000/api/reservations', {
+            method: 'DELETE',
+            body: JSON.stringify(oldData._id)
+          });
           const response = await fetch('http://localhost:3000/api/reservations', {
             method: 'POST',
-            body: JSON.stringify(data)
+            body: JSON.stringify(newReservation)
           });
-          updateReservations(await response.json());
+
+          const newresponse = await fetch('http://localhost:3000/api/reservations');
+          updateReservations(await newresponse.json());
         },
         onRowDelete: async oldData => {
-          console.log(oldData);
-          const data = [...reservations];
-          data.splice(data.indexOf(oldData), 1);
+          // const data = [...reservations];
+          // data.splice(data.indexOf(oldData), 1);
           const response = await fetch('http://localhost:3000/api/reservations', {
-            method: 'POST',
-            body: JSON.stringify(data)
+            method: 'DELETE',
+            body: JSON.stringify(oldData._id)
           });
-          updateReservations(await response.json());
+          const newresponse = await fetch('http://localhost:3000/api/reservations');
+          updateReservations(await newresponse.json());
         }
       }}
     />
