@@ -11,6 +11,9 @@ import {
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 
+const dev = process.env.NODE_ENV !== 'production';
+const server = dev ? 'http://localhost:3000' : 'https://banc2.vercel.app';
+
 const today = moment(new Date())
 
 const table_columns = [
@@ -105,42 +108,42 @@ function Reservations(props) {
       }}
       editable={{
         onRowAdd: async newReservation => {
-          const response = await fetch('http://localhost:3000/api/reservations', {
+          const response = await fetch(`${server}/api/reservations`, {
             method: 'POST',
             body: JSON.stringify(newReservation)
           });
-          const newresponse = await fetch('http://localhost:3000/api/reservations');
+          const newresponse = await fetch(`${server}/api/reservations`);
           updateReservations(await newresponse.json());
         },
         onRowUpdate: async (newReservation, oldData) => {
           // const data = [...reservations];
           // data[data.indexOf(oldData)] = newReservation;
-          // const response = await fetch('http://localhost:3000/api/reservations', {
+          // const response = await fetch(`${server}/api/reservations`, {
           //   method: 'UPDATE',
           //   body: JSON.stringify({id: oldData._id, newRes: newReservation})
           // });
           delete newReservation._id;
 
-          const delresponse = await fetch('http://localhost:3000/api/reservations', {
+          const delresponse = await fetch(`${server}/api/reservations`, {
             method: 'DELETE',
             body: JSON.stringify(oldData._id)
           });
-          const response = await fetch('http://localhost:3000/api/reservations', {
+          const response = await fetch(`${server}/api/reservations`, {
             method: 'POST',
             body: JSON.stringify(newReservation)
           });
 
-          const newresponse = await fetch('http://localhost:3000/api/reservations');
+          const newresponse = await fetch(`${server}/api/reservations`);
           updateReservations(await newresponse.json());
         },
         onRowDelete: async oldData => {
           // const data = [...reservations];
           // data.splice(data.indexOf(oldData), 1);
-          const response = await fetch('http://localhost:3000/api/reservations', {
+          const response = await fetch(`${server}/api/reservations`, {
             method: 'DELETE',
             body: JSON.stringify(oldData._id)
           });
-          const newresponse = await fetch('http://localhost:3000/api/reservations');
+          const newresponse = await fetch(`${server}/api/reservations`);
           updateReservations(await newresponse.json());
         }
       }}
@@ -149,7 +152,7 @@ function Reservations(props) {
 }
 
 Reservations.getInitialProps = async (ctx) => {
-  const response = await fetch('http://localhost:3000/api/reservations');
+  const response = await fetch(`${server}/api/reservations`);
   return {
     reservations: await response.json()
   };

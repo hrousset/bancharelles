@@ -31,6 +31,9 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 
 import 'isomorphic-fetch';
 
+const dev = process.env.NODE_ENV !== 'production';
+const server = dev ? 'http://localhost:3000' : 'https://banc2.vercel.app';
+
 const localizer = momentLocalizer(moment)
 
 const styles = {
@@ -116,12 +119,12 @@ function Calendrier(props) {
       setLoading(true);
 
       // update
-      const response = await fetch('http://localhost:3000/api/reservations', {
+      const response = await fetch(`${server}/api/reservations`, {
         method: 'POST',
         body: JSON.stringify(newReservation)
       });
 
-      const newresponse = await fetch('http://localhost:3000/api/reservations');
+      const newresponse = await fetch(`${server}/api/reservations`);
       updateReservations(await newresponse.json());
 
       // reset
