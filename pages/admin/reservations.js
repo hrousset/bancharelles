@@ -11,8 +11,9 @@ import {
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 
-const dev = process.env.NODE_ENV !== 'production';
-const server = dev ? 'http://localhost:3000' : 'https://banch2.vercel.app';
+// const dev = process.env.NODE_ENV !== 'production';
+// const server = dev ? 'http://localhost:3000' : 'https://banch2.vercel.app';
+const server = 'https://banch2.vercel.app';
 
 const today = moment(new Date())
 
