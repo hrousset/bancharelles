@@ -221,7 +221,7 @@ function Calendrier(props) {
 }
 
 Calendrier.getInitialProps = async (ctx) => {
-  const response = await fetch('http://localhost:3000/api/reservations');
+  const response = await fetch(`${server}/api/reservations`);
   return {
     reservations: await response.json()
   };
